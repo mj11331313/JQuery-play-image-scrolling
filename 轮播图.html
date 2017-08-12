@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            list-style: none;
+        }
+        img{
+            width: 440px;
+            height: 300px;
+            border: none;
+            display: none;
+        }
+        #imgs .selected{
+            display: block;
+        }
+        #container{
+            width: 440px;
+            height: 300px;
+            margin: 100px auto;
+            position: relative;
+        }
+        #nav li,#arrows div{
+            float: left;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        #nav,#arrows{
+            position: absolute;
+            bottom: 10px;
+        }
+        #nav{
+            right: 10px;
+        }
+        #arrows{
+            left: 10px;
+        }
+        #nav .selected{
+            background: orange;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="imgs">
+            <img src="imgs/1.jpg" alt="" class="selected"/>
+            <img src="imgs/2.jpg" alt=""/>
+            <img src="imgs/3.jpg" alt=""/>
+            <img src="imgs/4.jpg" alt=""/>
+        </div>
+        <ul id="nav">
+            <li class="selected">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+        <div id="arrows">
+            <div id="left">&lt;</div>
+            <div id="right">&gt;</div>
+        </div>
+    </div>
+    <script src="../jquery-1.12.4.js"></script>
+    <script>
+        $(function(){
+            var nowIndex = 0;
+            var $navli = $("#nav li");
+            var $img = $("#imgs img");
+            var timer;
+            $navli.mouseenter(function(){
+                nowIndex = $(this).index();
+                changeImg();
+            });
+            $("#left").on("click",function(){
+                nowIndex -- ;
+                if( nowIndex == -1 )  nowIndex = $navli.length - 1;
+                changeImg();
+            });
+            $("#right").on("click",function(){
+                nowIndex ++ ;
+                if( nowIndex == $navli.length ) nowIndex = 0 ;
+                changeImg();
+            });
+            play();
+            $("#container").mouseleave(function(){
+                play();
+            });
+            $("#container").mouseenter(function(){
+                clearInterval(timer);
+            });
+            function changeImg(){
+                $navli.removeClass("selected");
+                $navli.eq(nowIndex).addClass("selected");
+                $img.removeClass("selected");
+                $img.eq(nowIndex).addClass("selected");
+            };
+            function play(){
+                timer = setInterval(function(){
+                    $("#right").trigger("click");
+                },1000);
+            }
+        })
+    </script>
+</body>
+</html>
